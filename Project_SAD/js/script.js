@@ -99,6 +99,6 @@ document.addEventListener('DOMContentLoaded', function() {
     registerLink.addEventListener('click', function(e) {
         e.preventDefault();
       
-        alert('Registration page would go here');
+        window.location.href = 'Project_SAD/login.php'; 
     });
 });

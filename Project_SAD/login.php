@@ -34,6 +34,105 @@ $campus = $_POST['campus'];
 //Accounts
 $username = $_POST['username'];
 $password = $_POST['password'];
+$password1 = $_POST['password1'];
+$acc_type = "User";
+
+ if (empty($FName) || empty($MName) || empty($LName) || empty($dateOfBirth) || empty($sex) ||
+        empty($contact) || empty($email) || empty($province) || empty($city) || empty($barangay) || 
+        empty($zipCode) || empty($schoolId) || empty($department) || empty($program) || empty($campus) ||
+        empty($username) || empty($password)|| $password !== $password1) {
+            ?><header>
+            <?php
+        echo "<script>
+            swal({
+                title: 'Please fill out all required fields!',
+                icon: 'error',
+                button: 'okay',
+            }).then(() => {
+                window.history.back();
+            });
+        </script>";
+        ?>
+        </header>
+        <?php
+        exit;
+    }
+
+    // Email Format Validation
+    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        ?><header>
+            <?php
+        echo "<script>
+            swal({
+                title: 'Invalid email format!',
+                icon: 'error',
+                button: 'okay',
+            }).then(() => {
+                window.history.back();
+            });
+        </script>";
+        ?>
+        </header>
+        <?php
+        exit;
+    }
+
+    // Contact Number Validation (You can customize this)
+    if (!preg_match('/^\d{10,11}$/', $contact)) {
+        ?><header>
+            <?php
+        echo "<script>
+            swal({
+                title: 'Invalid contact number format!',
+                icon: 'error',
+                button: 'okay',
+            }).then(() => {
+                window.history.back();
+            });
+        </script>";
+        ?>
+        </header>
+        <?php
+        exit;
+    }
+
+    // School ID Validation (You can customize this)
+    if (!preg_match('/^\d+$/', $schoolId)) {
+        ?><header>
+            <?php
+        echo "<script>
+            swal({
+                title: 'Invalid School ID format!',
+                icon: 'error',
+                button: 'okay',
+            }).then(() => {
+                window.history.back();
+            });
+        </script>";
+        ?>
+        </header>
+        <?php
+        exit;
+    }
+
+    // Password Validation (You can customize this)
+    if (strlen($password) < 8) {
+        ?><header>
+            <?php
+        echo "<script>
+            swal({
+                title: 'Password must be at least 8 characters!',
+                icon: 'error',
+                button: 'okay',
+            }).then(() => {
+                window.history.back();
+            });
+        </script>";
+        ?>
+        </header>
+        <?php
+        exit;
+    }
 
 
     $stmt = $conn ->prepare("INSERT INTO contact_info(email, contact_number)
@@ -54,9 +153,9 @@ $password = $_POST['password'];
     $stmt->execute();
     $id_school = $conn-> insert_id;
 
-    $stmt = $conn ->prepare("INSERT INTO account_info(contact_id ,User_Name, User_Password)
-    values(?, ?, ?)");
-    $stmt->bind_param("iss",$Id_contact , $username, $password);
+    $stmt = $conn ->prepare("INSERT INTO account_info(contact_id ,User_Name, User_Password, acc_type)
+    values(?, ?, ?, ?)");
+    $stmt->bind_param("isss",$Id_contact , $username, $password, $acc_type);
     $stmt->execute();
     $Id_account = $conn-> insert_id;
 
@@ -108,14 +207,15 @@ $password = $_POST['password'];
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <link rel="stylesheet" type="text/css" href="login.css" />
+    <link rel="stylesheet" type="text/css" href="css/login.css" />
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/x-icon" href="images/logo.img">
       <title>Login Page</title>
 </head>
 <body>
     <div name = "nav-icon"class="container-nav">
-        <img class="nav-icon" src="image_kira_colorefa/logo.ico">
+        <img class="nav-icon"  src="images/logo.png" alt="logo" >
     <div name = "nav-dashboard" class="container_nav1">
         <ul>
             <li><a href="About-us.html" >About us</a></li>
@@ -129,7 +229,7 @@ $password = $_POST['password'];
     </div>
     <hr>
     <div class="form-container">
-        <form method ="post" onsubmit="return validateForm()">
+        <form method ="post" id="myForm" >
 
             <div name = "container-login">
                 <h2>Personal Information</h2>
@@ -204,14 +304,24 @@ $password = $_POST['password'];
                 <h2>Account Profile</h2>
                 <input class="placehoder-format" type = "text"name ="username" placeholder= "User Name" required>
                 <input class="placehoder-format" type = "password" name="password" placeholder= "password" id="password1" required>
-                <input class="placehoder-format" type = "password" placeholder= "Confirm Password" id="password2" required>
-                <input type = "checkbox" id = "showPassword" onclick="togglePasswordVisibility()">
+                <input class="placehoder-format" type = "password" name="password1" placeholder= "Confirm Password" id="password2" required>
+                <button type="button" id = "showPassword" onclick="togglePasswordVisibility()" >
+                            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                <circle cx="12" cy="12" r="3"></circle>
+                            </svg>
+                        </button>
             </div>
-            <br>
             <br>
             <div  class = "Register-container">
-            <button class = "Register" type = "submit" name = "submit" onclick="validateForm()">Register</button>
+            <button class = "Register2" type = "submit" name = "submit" onclick="validateForm()">Register</button>
             </div>
+            <div class="terms">
+                        By continuing, you agree to our <a class ="a1" href="#"> Terms of Service</a> and <a href="#" class="a1">Privacy Policy</a>
+                    </div>
+                    <div class="login-link">
+                    No account yet? <a class="a2" href="index.php" id="registerLink" >Sign In Now!</a>
+                </div>
         </div>
         </form>
     </div>

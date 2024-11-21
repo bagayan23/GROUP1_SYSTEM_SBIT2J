@@ -1,5 +1,15 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
 body {
-    overflow:scroll;
+  min-height: 100vh;
+  background-color: #f5f5f5;
+  display: flex;
+  flex-direction: column;
 }
 
 ul {
@@ -7,7 +17,7 @@ ul {
     margin: 0px;
     padding: 0;
     overflow: hidden;
-    background-color: #ffffff;
+    background-color: #f5f5f5;
     display: inline-block;
   }
     
@@ -41,6 +51,8 @@ ul {
       display: flex;
       justify-content: center;
       align-items: center;
+      margin-top: 20px;
+
     }
     
     .container-nav{
@@ -48,6 +60,7 @@ ul {
       align-items: center;
       align-content: center;
       position: relative;
+      height: 79px;
     }
 
     .stat{
@@ -55,11 +68,26 @@ ul {
       right: 0px; 
     }
     .nav-icon{
-      margin-right: 20px;
+      margin-left: 20px;
+      height: auto;
+      width: 70px;
     }
+ 
 
     .Register {
+      color: black;
+      border: .2px solid black;
+      margin-left: 8px;
+      font-weight: 16px;
+      width: 91px;
+      height: 41px;
+      border-radius: 5px;
+      background: rgb(233, 236, 239);
+      transition: all .60s;
+    }
+    .Signin{
       color: white;
+      border: .2px solid black;
       margin-left: 8px;
       font-weight: 16px;
       width: 91px;
@@ -69,8 +97,9 @@ ul {
       background: rgb(1, 73, 162);
       transition: all .60s;
     }
-    .Signin{
+    .Register2{
       color: white;
+      border: .2px solid black;
       margin-left: 8px;
       font-weight: 16px;
       width: 91px;
@@ -82,8 +111,10 @@ ul {
     }
 
     .Register:hover{
-      opacity: 0.7;
+      opacity: 0.8;
       cursor: pointer;
+      color: white;
+      background: rgb(1, 73, 162);
     }
     .Register2:hover{
       opacity: 0.7;
@@ -103,12 +134,12 @@ ul {
     }
     .box-format{
       width: 250px;
-      height: 45px;
+      height: 40px;
       border-radius: 5px;
     }
     .box-format-school{
       width: 227px;
-      height: 45px;
+      height: 40px;
       border-radius: 5px;
     }
 
@@ -123,26 +154,28 @@ ul {
     }
 
     .sex,.suffix{
-      width: 100px;
-      height: 43px;
+      width: 110px;
+      height: 40px;
       border-radius: 5px;
     }
 
     .zipCode{
-      width: 110px;
-      height: 41px;
+      width: 111px;
+      height: 40px;
       border-radius: 5px;
     }
 
     .type-manual{
-      width: 430px;
+      width: 435px;
       height: 45px;
       margin-top: 5px;
     }
 h2{
   font-family: Arial, Helvetica, sans-serif;
-  margin-bottom: 10px;
+  margin-bottom: 5px;
+  margin-top: 20px;
 }
+
 /*Animations in placeholder*/
 input:focus::-webkit-input-placeholder {
   font-size: .95em;
@@ -155,4 +188,36 @@ input:focus::-webkit-input-placeholder {
 input::-webkit-input-placeholder {
   transition: 2s ease-out;
   color: black;
+}
+
+.terms {
+    text-align: center;
+    font-size: 0.875rem;
+    color: #666;
+    margin-bottom: 1.1rem;
+    margin-top: 15px;
+}
+
+.login-link {
+    text-align: center;
+    color: black;
+    margin-bottom: 30px;
+
+}
+
+.a1{
+  color: #666;
+  text-decoration: underline;
+  transition: all 1s;
+}
+
+.a2{
+  color: black;
+  text-decoration: underline;
+  transition: all 1s;
+}
+
+.a1:hover,.a2:hover{
+  text-decoration: none;
+  opacity: .7;
 }

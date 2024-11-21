@@ -62,3 +62,10 @@ function validateForm() {
     }
     
   }
+  document.getElementById("myForm").addEventListener("submit", function(event) {
+    if (!validateForm()) {
+      event.preventDefault(); 
+    } else {
+  
+    }
+  });
