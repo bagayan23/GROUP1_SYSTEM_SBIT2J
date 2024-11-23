@@ -1,4 +1,3 @@
-
 <?php 
 include ('php/connection.php');
 include ('php/scripts.php');
@@ -40,7 +39,7 @@ $acc_type = "User";
  if (empty($FName) || empty($MName) || empty($LName) || empty($dateOfBirth) || empty($sex) ||
         empty($contact) || empty($email) || empty($province) || empty($city) || empty($barangay) || 
         empty($zipCode) || empty($schoolId) || empty($department) || empty($program) || empty($campus) ||
-        empty($username) || empty($password)|| $password !== $password1) {
+        empty($username) || empty($password) || empty($password1)) {
             ?><header>
             <?php
         echo "<script>
@@ -77,7 +76,7 @@ $acc_type = "User";
         exit;
     }
 
-    // Contact Number Validation (You can customize this)
+    // Contact Number Validation
     if (!preg_match('/^\d{10,11}$/', $contact)) {
         ?><header>
             <?php
@@ -96,7 +95,7 @@ $acc_type = "User";
         exit;
     }
 
-    // School ID Validation (You can customize this)
+    // School ID Validation 
     if (!preg_match('/^\d+$/', $schoolId)) {
         ?><header>
             <?php
@@ -115,7 +114,7 @@ $acc_type = "User";
         exit;
     }
 
-    // Password Validation (You can customize this)
+    // Password Validation 
     if (strlen($password) < 8) {
         ?><header>
             <?php
@@ -134,37 +133,63 @@ $acc_type = "User";
         exit;
     }
 
+    // Password Confirmation
+    if ($password !== $password1) {
+        ?><header>
+            <?php
+        echo "<script>
+            swal({
+                title: 'Passwords do not match!',
+                icon: 'error',
+                button: 'okay',
+            }).then(() => {
+                window.history.back();
+            });
+        </script>";
+        ?>
+        </header>
+        <?php
+        exit;
+    }
 
-    $stmt = $conn ->prepare("INSERT INTO contact_info(email, contact_number)
-    values(?, ?)");
-    $stmt->bind_param("ss", $email, $contact);
-    $stmt->execute();
-    $Id_contact = $conn-> insert_id;
-
-    $stmt = $conn ->prepare("INSERT INTO address_info(Province, City_Municipality, Barangay, Zip_Code, House_Address, Street)
-    values(?, ?, ?, ?, ?, ?)");
-    $stmt->bind_param("sssiss", $province, $city, $barangay, $zipCode, $houseAddress, $street);
-    $stmt->execute();
-    $Id_address = $conn-> insert_id;
-
-    $stmt = $conn ->prepare("INSERT INTO school_info(Student_Id, Campus, Deparment, Program)
-    values(?, ?, ?, ?)");
-    $stmt->bind_param("isss", $schoolId, $campus, $department, $program);
-    $stmt->execute();
-    $id_school = $conn-> insert_id;
-
-    $stmt = $conn ->prepare("INSERT INTO account_info(contact_id ,User_Name, User_Password, acc_type)
-    values(?, ?, ?, ?)");
-    $stmt->bind_param("isss",$Id_contact , $username, $password, $acc_type);
-    $stmt->execute();
-    $Id_account = $conn-> insert_id;
-
-    $stmt = $conn ->prepare("INSERT INTO personal_info(FName, MName, LName, Suffix, DateOfBirth, Sex, contact_id,Address_Id, School_Id, Account_Id)
-    values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-    $stmt->bind_param("ssssssiiii", $FName, $MName, $LName, $Suffix, $dateOfBirth, $sex, $Id_contact, $Id_address,$id_school,$Id_account);
+    // Hash the password
+    $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
 
 
-    if ($stmt->execute()) {
+    $conn->begin_transaction();
+
+    try {
+        // Insert contact info
+        $stmt = $conn->prepare("INSERT INTO contact_info(email, contact_number) VALUES (?, ?)");
+        $stmt->bind_param("ss", $email, $contact);
+        $stmt->execute();
+        $Id_contact = $conn->insert_id;
+
+        // Insert address info
+        $stmt = $conn->prepare("INSERT INTO address_info(Province, City_Municipality, Barangay, Zip_Code, House_Address, Street) VALUES (?, ?, ?, ?, ?, ?)");
+        $stmt->bind_param("sssiss", $province, $city, $barangay, $zipCode, $houseAddress, $street);
+        $stmt->execute();
+        $Id_address = $conn->insert_id;
+
+        // Insert school info
+        $stmt = $conn->prepare("INSERT INTO school_info(Student_Id, Campus, Deparment, Program) VALUES (?, ?, ?, ?)");
+        $stmt->bind_param("isss", $schoolId, $campus, $department, $program);
+        $stmt->execute();
+        $id_school = $conn->insert_id;
+
+        // Insert account info
+        $stmt = $conn->prepare("INSERT INTO account_info(contact_id, User_Name, User_Password, acc_type) VALUES (?, ?, ?, ?)");
+        $stmt->bind_param("isss", $Id_contact, $username, $hashedPassword, $acc_type);
+        $stmt->execute();
+        $Id_account = $conn->insert_id;
+
+        // Insert personal info
+        $stmt = $conn->prepare("INSERT INTO personal_info(FName, MName, LName, Suffix, DateOfBirth, Sex, contact_id, Address_Id, School_Id, Account_Id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+        $stmt->bind_param("ssssssiiii", $FName, $MName, $LName, $Suffix, $dateOfBirth, $sex, $Id_contact, $Id_address, $id_school, $Id_account);
+        $stmt->execute();
+
+        // Commit transaction if all queries are successful
+        $conn->commit();
 
         ?><header>
             <?php
@@ -181,9 +206,10 @@ $acc_type = "User";
         <?php
          header('refresh:2;login.php');
         exit;
-    $stmt->close();
-    $conn->close();
-    }else{
+    } catch (Exception $e) {
+        
+        $conn->rollback();
+
         ?><header>
             <?php
         echo "<script>
@@ -191,16 +217,17 @@ $acc_type = "User";
         title: 'Unsuccessfully Registered !',
         icon: 'error',
         button: true,
-      });
+      }).then(() => {
+                window.history.back();
+            });
         </script>";
         ?>
         </header>
         <?php
-        header('refresh:2;login.php');
         exit;
+    }
     $stmt->close();
     $conn->close();
-    }
 }
 ?>
 
@@ -305,12 +332,12 @@ $acc_type = "User";
                 <input class="placehoder-format" type = "text"name ="username" placeholder= "User Name" required>
                 <input class="placehoder-format" type = "password" name="password" placeholder= "password" id="password1" required>
                 <input class="placehoder-format" type = "password" name="password1" placeholder= "Confirm Password" id="password2" required>
-                <button type="button" id = "showPassword" onclick="togglePasswordVisibility()" >
-                            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
-                                <circle cx="12" cy="12" r="3"></circle>
-                            </svg>
-                        </button>
+                <button type="button" id="togglePassword" class="toggle-password"><span class = "button-span">123</span>
+                    <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                        <circle cx="12" cy="12" r="3"></circle>
+                    </svg>
+                </button>
             </div>
             <br>
             <div  class = "Register-container">
@@ -325,5 +352,6 @@ $acc_type = "User";
         </div>
         </form>
     </div>
+    <script></script>
     </body>
 </html>

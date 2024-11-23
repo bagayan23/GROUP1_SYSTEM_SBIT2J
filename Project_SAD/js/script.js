@@ -16,7 +16,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function validatePassword(password) {
-        return password.length >= 6;
+        return password.length >= 8;
     }
 
     function showError(message) {
@@ -47,7 +47,7 @@ document.addEventListener('DOMContentLoaded', function() {
     passwordInput.addEventListener('input', function() {
         const validationMessage = document.getElementById('password-validation');
         if (!validatePassword(this.value) && this.value) {
-            validationMessage.textContent = 'Password must be at least 6 characters long';
+            validationMessage.textContent = 'Password must be at least 8 characters long';
         } else {
             validationMessage.textContent = '';
         }
@@ -99,6 +99,6 @@ document.addEventListener('DOMContentLoaded', function() {
     registerLink.addEventListener('click', function(e) {
         e.preventDefault();
       
-        window.location.href = 'Project_SAD/login.php'; 
+        window.location.href = 'login.php'; 
     });
 });

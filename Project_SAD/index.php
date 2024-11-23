@@ -5,10 +5,11 @@ include ('php/scripts.php');
 if(isset($_POST['submit'])){
 $username = $_POST['username'];
 $password = $_POST['password'];
-
+$email = $_POST['email'];
+$hashPassword = password_hash($password, PASSWORD_DEFAULT);
 
 $stmt = $conn ->prepare("SELECT user_name, email, user_password FROM viewdetails WHERE (user_name = ? OR email = ? ) AND user_password = ?");
-$stmt->bind_param("sss", $username, $username, $password);
+$stmt->bind_param("sss", $username, $username, $hashPassword);
 $stmt->execute();
 
 
@@ -87,13 +88,14 @@ $stmt->close();
 $conn->close();
 }
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login Page</title>
-    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="CSS/styles.css">
 </head>
 <body>
     <nav>
@@ -116,7 +118,7 @@ $conn->close();
             <div class="login-form">
                 <h2>Welcome Back</h2>
                 <div id="error-message" class="error-message"></div>
-                <form id="loginForm" novalidate>
+                <form id="loginForm" action="POST" novalidate>
                     <div class="form-group">
                         <label for="username">
                             <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -124,7 +126,7 @@ $conn->close();
                                 <circle cx="12" cy="7" r="4"></circle>
                             </svg>
                         </label>
-                        <input type="text" id="username" placeholder="Username" name="username" required>
+                        <input type="text" id="username" placeholder="Username" required>
                         <span class="validation-message" id="username-validation"></span>
                     </div>
                     <div class="form-group">
@@ -134,8 +136,8 @@ $conn->close();
                                 <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
                             </svg>
                         </label>
-                        <input type="password" id="password" placeholder="Password" name="password" required>
-                        <button type="button" id="togglePassword" class="toggle-password" >
+                        <input type="password" id="password" placeholder="Password" required>
+                        <button type="button" id="togglePassword" class="toggle-password">
                             <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                 <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
                                 <circle cx="12" cy="12" r="3"></circle>
@@ -146,7 +148,7 @@ $conn->close();
                     <div class="forgot-password">
                         <a href="#" id="forgotPassword">Forgot password?</a>
                     </div>
-                    <button type="submit" class="btn btn-primary btn-block" id="loginButton" name="submit">
+                    <button type="submit" name="submit" class="btn btn-primary btn-block" id="loginButton">
                         <span>Sign In</span>
                         <div class="spinner" id="loginSpinner"></div>
                     </button>
@@ -160,5 +162,6 @@ $conn->close();
             </div>
         </div>
     </main>
+    
 </body>
 </html>
