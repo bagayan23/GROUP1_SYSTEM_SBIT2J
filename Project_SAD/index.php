@@ -73,8 +73,8 @@
         </div>
     </main>
 </body>
+<script src="js/login.js"></script>
 <?php
 include('php/connection.php');
-include('php/scripts.php');
 ?>
 </html>
