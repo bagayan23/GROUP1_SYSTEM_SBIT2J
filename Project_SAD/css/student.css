@@ -1,0 +1,235 @@
+@import url("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css");
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+body {
+    min-height: 100vh;
+    background-color: #f5f5f5;
+    display: flex;
+    flex-direction: column;
+}
+
+nav {
+    padding: 1rem 2rem;
+    background-color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.logo {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #0066cc;
+}
+.logo img{
+    max-width: 15%;
+    height: auto;
+    mix-blend-mode: multiply;
+}
+
+
+/* navigations */
+nav {
+    padding: 1rem 2rem;
+    background-color: white;
+    display: flex;
+    align-items: left;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+/* navigations default media size */
+@media (max-width: 768px) {
+    .nav-links {
+        gap: 1rem; 
+        margin-left: 1rem; 
+    }
+}
+
+/* navigations for home, events, my events */
+.wrapper{
+    display: inline-block;
+}
+.nav-wrapper{
+    justify-content: center;
+    align-items: center;
+    margin-right: 200px;
+    background: rgb(233, 236, 239);
+    padding: 2px 50px 2px 50px;
+    border-radius: 50px;
+}
+ .button {
+    display: inline-block;
+    height: 50px;
+    width: 50px;
+    float: left;
+    text-decoration: none;
+    margin: 0 10px;
+    overflow: hidden;
+    background: rgb(233, 236, 239);
+    border-radius: 20px;
+    cursor: pointer;
+    transition: all 0.3s ease-out;
+  }
+  .wrapper .button:hover {
+    width: 170px;
+  }
+  .wrapper .button .icon {
+    display: inline-block;
+    height: 50px;
+    width: 50px;
+    color: #000;
+    text-align: center;
+    border-radius: 20px;
+    box-sizing: border-box;
+    line-height: 50px;
+    transition: all 0.3s ease-out;
+  }
+  .wrapper .button:hover {
+    background: rgb(72, 202, 228);
+    color: black;
+  }
+  .wrapper .button .icon i {
+    font-size: 25px;
+    line-height: 50px;
+    transition: all 0.3s ease-out;
+  }
+  .wrapper .button:hover .icon i {
+    color: black;
+  }
+  .wrapper .button span {
+    font-size: 20px;
+    font-weight: 400;
+    line-height: 50px;
+    margin-left: 10px;
+    transition: all 0.3s ease-out;
+  }
+  .wrapper .button:nth-child(1) span {
+    color: black;
+  }
+
+  /* profiles info sub dashboard */
+
+  .wrapper-notif{
+    display: flex;
+    margin-right: 20px;
+  }
+  .notif-btn{
+    height: 50px;
+    width: 50px;
+    border-radius: 50%;
+    background-color: rgb(233, 236, 239);
+    border: .5px solid black;
+    margin-right: 15px;
+    cursor: pointer;
+    transition: all .8s;
+    
+  }
+  .notif-icon i{
+    font-size: 25px;
+    line-height: 50px;
+    margin-left: 11px;
+  }
+
+  .notif-btn:hover{
+    background: rgb(72, 202, 228);
+    color: black;
+  }
+  .user-pic{
+    mix-blend-mode: multiply;
+    width: 50px;
+    border-radius: 50%;
+  }
+  .sub-menu-wrap{
+    position: absolute;
+    top: 15%;
+    right: 3%;
+    width: 320px;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.5s;
+  }
+  .sub-menu-wrap.open-menu{
+    max-height: 400px;
+
+  }
+.sub-menu{
+  padding: 20px;
+  margin: 10px;
+  background: rgb(233, 236, 239);
+}
+.user-info{
+  display: flex;
+  align-items: center;
+}
+.user-info-details{
+ display: inline-block;
+ margin-left: 10px;
+}
+.user-info-details h3{
+  font-weight: 500;
+}
+.user-info-details h4,.sub-menu-link a{
+  font-weight: 200;
+}
+.user-info img{
+  width: 50px;
+  border-radius: 50%;
+  margin-left: 15px;
+  mix-blend-mode: multiply;
+}
+.sub-menu hr{
+  border: 0;
+  height: 1.5px;
+  width: 100%;
+  margin: 15px 0 10px;
+  background: #ccc;
+}
+.sub-menu-link{
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  color: black;
+  margin: 12px 0 10px;
+}
+.sub-menu-link p{
+  width: 100%;
+  transition: all .3s;
+}
+.sub-menu-link p:hover{
+  font-weight: 600;
+}
+.user-btn{
+  display: flex;
+  border: none;
+  background: inherit;
+  align-items: center;
+}
+.user-btn p{
+  font-size: 25px;
+  margin-left: 5px;
+  rotate: 90deg;
+}
+/* body content */
+.homepage{
+  width: 100%;
+  height: 700px;
+  object-fit:contain;
+  background-image: url("../images/qcu.png"); 
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+/* footer info */
+.container-footer{
+  background: rgb(0, 119, 182);
+  height: 200px;
+  width: 100%;
+}
+

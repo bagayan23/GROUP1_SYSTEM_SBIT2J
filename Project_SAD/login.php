@@ -242,7 +242,7 @@ $acc_type = "User";
 </head>
 <body>
     <div name = "nav-icon"class="container-nav">
-        <img class="nav-icon"  src="images/logo.png" alt="logo" >
+        <img class="nav-icon"  src="images/logo.jpg" alt="logo" >
     <div name = "nav-dashboard" class="container_nav1">
         <ul>
             <li><a href="About-us.html" >About us</a></li>
@@ -250,8 +250,8 @@ $acc_type = "User";
         </ul>
     </div>
     <div name = "stat" class="stat">
-        <button name = "Signin" style= "margin-right : 20px;" class="Signin">Sign In</button>
-        <button name = "Register"style= "margin-right : 20px;"class="Register">Register</button>
+        <a href="index.php"><button name = "Signin"  style= "margin-right : 20px;" class="Signin">Sign In</button></a>
+        <a href="login.php"><button name = "Register" style= "margin-right : 20px;"class="Register">Register</button></a>
     </div>
     </div>
     <hr>

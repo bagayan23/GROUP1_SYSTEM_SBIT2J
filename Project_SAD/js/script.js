@@ -10,7 +10,6 @@ document.addEventListener('DOMContentLoaded', function() {
     const forgotPassword = document.getElementById('forgotPassword');
     const registerLink = document.getElementById('registerLink');
 
-   
     function validateUsername(username) {
         return username.length >= 3;
     }
@@ -53,32 +52,49 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
- 
     loginForm.addEventListener('submit', async function(e) {
         e.preventDefault();
         hideError();
 
-   
         if (!validateUsername(usernameInput.value) || !validatePassword(passwordInput.value)) {
             showError('Please check your username and password');
             return;
         }
 
-        
         loginButton.disabled = true;
         loginSpinner.style.display = 'block';
 
         try {
-         
-            await new Promise(resolve => setTimeout(resolve, 1500));
+            // Send data to PHP for database check and password hashing
+            const response = await fetch('login_check.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
+                body: `username=${encodeURIComponent(usernameInput.value)}&password=${encodeURIComponent(passwordInput.value)}`
+            });
 
-           
-            if (usernameInput.value === 'demo' && passwordInput.value === 'password123') {
-                // Successful login
-                localStorage.setItem('isLoggedIn', 'true');
-                window.location.href = '/dashboard'; 
+            const data = await response.json();
+
+            if (data.success) {
+                // Login successful, redirect based on account type 
+                let accountType = data.accountType;
+
+                swal({
+                    title: 'LogIn Successfully!',
+                    icon: 'success',
+                    button: 'okay',
+                }).then(() => {
+                    if (accountType === 'User') {
+                        window.location.href = 'user_dashboard.php'; // Replace with your actual user dashboard URL
+                    } else if (accountType === 'organizer') {
+                        window.location.href = 'organizer_dashboard.php'; // Replace with your actual organizer dashboard URL
+                    } else {
+                        window.location.href = 'admin_dashboard.php'; // Replace with your actual admin dashboard URL
+                    }
+                });
             } else {
-                throw new Error('Invalid credentials');
+                throw new Error(data.message);
             }
         } catch (error) {
             showError(error.message);
@@ -99,6 +115,6 @@ document.addEventListener('DOMContentLoaded', function() {
     registerLink.addEventListener('click', function(e) {
         e.preventDefault();
       
-        window.location.href = 'login.php'; 
+        window.location.href = 'register.php'; 
     });
 });

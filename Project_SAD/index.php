@@ -1,94 +1,3 @@
-<?php
-include ('php/connection.php');
-include ('php/scripts.php');
-
-if(isset($_POST['submit'])){
-$username = $_POST['username'];
-$password = $_POST['password'];
-$email = $_POST['email'];
-$hashPassword = password_hash($password, PASSWORD_DEFAULT);
-
-$stmt = $conn ->prepare("SELECT user_name, email, user_password FROM viewdetails WHERE (user_name = ? OR email = ? ) AND user_password = ?");
-$stmt->bind_param("sss", $username, $username, $hashPassword);
-$stmt->execute();
-
-
-$rs = $stmt-> get_result();
-
-if ($rs-> num_rows > 0 ){
-    $row = $result->fetch_assoc(); 
-    $acc_type = $row["account_type"];
-
-    if($acc_type === "user"){
-        ?><header>
-        <?php
-    
-    echo "<script>
-    swal({
-    title: 'LogIn Successfully!',
-    icon: 'success',
-    button: 'okay',
-    });
-    </script>";
-    ?>
-    </header>
-    <?php
-     header('refresh:2;href.php'); //Insert url to page for  user
-     exit;
-    }elseif($acc_type === "organizer"){
-        ?><header>
-        <?php
-    
-    echo "<script>
-    swal({
-    title: 'LogIn Successfully!',
-    icon: 'success',
-    button: 'okay',
-    });
-    </script>";
-    ?>
-    </header>
-    <?php
-     header('refresh:2;href.php'); //Insert url to page for admin
-     exit;
-    }else{
-        ?><header>
-        <?php
-    
-    echo "<script>
-    swal({
-    title: 'LogIn Successfully!',
-    icon: 'success',
-    button: 'okay',
-    });
-    </script>";
-    ?>
-    </header>
-    <?php
-
-     header('refresh:2;href.php'); //Insert url to page for admin
-     exit;
-    }
-}else {
-    ?><header>
-    <?php
-
-echo "<script>
-swal({
-title: 'LogIn Failed!',
-icon: 'error',
-button: 'okay',
-});
-</script>";
-?>
-</header>
-<?php
-}
-$stmt->close();
-$conn->close();
-}
-?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -96,10 +5,11 @@ $conn->close();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login Page</title>
     <link rel="stylesheet" href="CSS/styles.css">
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 </head>
 <body>
     <nav>
-        <div class="logo"> <img src="images/logo.png" alt="logo" /></div>
+        <div class="logo"> <img src="images/logo.jpg" alt="logo" /></div>
         <div class="nav-links">
             <a href="#">About Us</a>
             <a href="#">Contact Us</a>
@@ -118,7 +28,7 @@ $conn->close();
             <div class="login-form">
                 <h2>Welcome Back</h2>
                 <div id="error-message" class="error-message"></div>
-                <form id="loginForm" action="POST" novalidate>
+                <form id="loginForm" action="login_check.php" method="POST" novalidate>
                     <div class="form-group">
                         <label for="username">
                             <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -126,7 +36,7 @@ $conn->close();
                                 <circle cx="12" cy="7" r="4"></circle>
                             </svg>
                         </label>
-                        <input type="text" id="username" placeholder="Username" required>
+                        <input type="text" id="username" name="username" placeholder="Username/Email" required>
                         <span class="validation-message" id="username-validation"></span>
                     </div>
                     <div class="form-group">
@@ -136,7 +46,7 @@ $conn->close();
                                 <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
                             </svg>
                         </label>
-                        <input type="password" id="password" placeholder="Password" required>
+                        <input type="password" id="password" name="password" placeholder="Password" required>
                         <button type="button" id="togglePassword" class="toggle-password">
                             <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                 <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
@@ -162,6 +72,9 @@ $conn->close();
             </div>
         </div>
     </main>
-    
 </body>
+<?php
+include('php/connection.php');
+include('php/scripts.php');
+?>
 </html>
