@@ -1,4 +1,4 @@
-
+<script src="js/login.js" DEFER></script>
 <script src="js/users.js" defer></script>
 <script src="js/jquery.min.js" defer></script>
 <script src="js/script.js" defer></script>

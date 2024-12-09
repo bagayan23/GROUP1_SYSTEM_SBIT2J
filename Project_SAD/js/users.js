@@ -105,9 +105,13 @@ function deleteData(id) {
 
 // Linear Search
 function linearSearch(query) {
-    return userData.filter(user => 
-        user.User_Name.toLowerCase().includes(query)
-    );
+    const result = [];
+    for (let i = 0; i < userData.length; i++) {
+        if (userData[i].User_Name.toLowerCase().includes(query.toLowerCase())) {
+            result.push(userData[i]);
+        }
+    }
+    return result;
 }
 
 // Binary Search 
